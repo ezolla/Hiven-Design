@@ -1,5 +1,5 @@
 {
-  "name": "learn-starter",
+  "name": "hiven-design",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -10,11 +10,15 @@
   "dependencies": {
     "next": "^10.0.0",
     "react": "16.13.1",
-    "react-dom": "16.13.1"
+    "react-copy-to-clipboard": "^5.0.2",
+    "react-dom": "16.13.1",
+    "styled-components": "^5.2.1"
   },
   "devDependencies": {
     "@types/node": "^14.14.10",
     "@types/react": "^17.0.0",
+    "@types/react-copy-to-clipboard": "^4.3.0",
+    "@types/styled-components": "^5.1.4",
     "typescript": "^4.1.2"
   }
 }
