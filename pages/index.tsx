@@ -15,7 +15,7 @@ export default function Home() {
     <div>
       <Head>
         <title>Hiven Design</title>
-        <link rel='icon' href='/favicon.ico' />
+        <link rel='icon' href='/logo.svg' />
       </Head>
 
       {/* Navigation */}
