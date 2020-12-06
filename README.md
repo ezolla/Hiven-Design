@@ -4,7 +4,7 @@ Project is in early stages. More features and details will be added in the near 
 
 ## Contributing
 
-It's easy to add your design to the site for everyone to use. 
+It's easy to add your design to the site for everyone to use.
 
 1. Go to [/pages/index.tsx](/pages/index.tsx)
 2. Find the edit pencil icon right above the first line of code. Clicking this will automatically fork the repo to your personal account.

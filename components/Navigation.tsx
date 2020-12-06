@@ -10,7 +10,7 @@ export default function Navigation() {
       <Links>
         <li>
           <a
-            href='https://github.com/ezolla/Hiven-Design/blob/main/README.md'
+            href='https://github.com/ezolla/Hiven-Design#contributing'
             target='_blank'
           >
             Contribute
