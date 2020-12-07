@@ -1,21 +1,22 @@
 import Head from 'next/head'
 import styled from 'styled-components'
+import { useHivenDesigns, useInputFilter } from '../utils/hooks'
 
 import Navigation from '../components/Navigation'
 import DesignStyle from '../components/DesignStyle'
+import Search from '../components/Search'
 
 export default function Home() {
-  const hivenDesigns = [
-    'Hiven Dark:aF92MTpkYXJrLCMzYjNiM2IsIzJkMmQyZCwjMjQyNDI0LCMxZTFlMWUsIzE5MTkxOSwjMTIxMjEyLCNmZmZmZmYsI2RlZGVkZSwjOTY5Njk2LCM4Nzg3ODcsIzY0NjQ2NCwjZmY3OWM2LCNmZjAwODMsIzFhYjU1NywjOGJlOWZkLCNmMWZhOGMsI2ZmNGY0Zg==',
-    'Discord Light:aF92MTpkYXJrLCNjZmNmY2YsI2Y3ZjdmNywjZjVmNWY1LCNmMmYyZjIsI2U2ZTZlNiwjZjVmNWY1LCMwMDAsIzAwMCwjOTY5Njk2LCM4Nzg3ODcsIzY0NjQ2NCwjZmMzZDE2LCNmYzRmMmQsIzFhYjU1NywjOGJlOWZkLCNmMWZhOGMsI2ZmNGY0Zg==',
-    'Discord Dark:aF92MTpkYXJrLCM0NjRhNTIsIzM5M0M0MywjMzYzOTNmLCMyZjMxMzYsIzI0MjYyOSwjMWUxZjIxLCNmZmZmZmYsI2RjZGRkZSwjOTY5Njk2LCM4Nzg3ODcsIzcyNzY3ZCwjNzI4OWRhLCM0RTVEOTQsIzFhYjU1NywjOGJlOWZkLCNmMWZhOGMsI2ZmNGY0Zg==',
-    'Subdued Blue:aF92MTpkYXJrLCMzQjNBNUUsIzNCM0E1RSwjMjgyODQxLCMyMzIzMzgsIzIzMjMzOCwjMUMxQzI5LCNGRkZGRkYsI2RlZGVkZSwjOTY5Njk2LCM4Nzg3ODcsIzY0NjQ2NCwjNzI4OURBLCMwMDk5RTUsIzFhYjU1NywjOGJlOWZkLCNmMWZhOGMsI2ZmNGY0Zg==',
-    'Chambray Blue:aF92MTpkYXJrLCM1ODZhYTgsIzRhNWM5YSwjNDE1MzkxLCMzYjRkOGIsIzM2NDg4NiwjMmY0MTdmLCNmZmZmZmYsI2RlZGVkZSwjOTY5Njk2LCM4Nzg3ODcsIzY0NjQ2NCwjYjBiM2I4LCM5Mjk2OWMsIzFhYjU1NywjOGJlOWZkLCNmMWZhOGMsI2ZmNGY0Zg==',
-    'Just Blue:aF92MTpkYXJrLCMzMTQyOWUsIzJmM2Y5NCwjMjUzMTdhLCMyMjJkNzAsIzFkMjg2YiwjMWEyMzU5LCNmZmZmZmYsI2RjZGRkZSwjOTY5Njk2LCM4Nzg3ODcsIzcyNzY3ZCwjYjBiM2I4LCM5Mjk2OWMsIzFhYjU1NywjOGJlOWZkLCNmMWZhOGMsI2ZmNGY0Zg==',
-    'Hiven Darker:aF92MTpkYXJrLCMxODE4MTgsIzE1MTUxNSwjMTMxMzEzLCMxMDEwMTAsIzA1MDUwNSwjMDEwMTAxLCNmZmZmZmYsI2RlZGVkZSwjOTY5Njk2LCM4Nzg3ODcsIzY0NjQ2NCwjZmY3OWM2LCNmZjAwODMsIzFhYjU1NywjOGJlOWZkLCNmMWZhOGMsI2ZmNGY0Zg==',
-    'Strelitzia Orange:aF92MTpkYXJrLCNmOTMsI2VlZSwjZmRhLCNmZjdmMDAsI2Q2MCwjYjIyLCMwMDAsIzAwMCwjMDAwLCMwMDAsIzAwMCwjZTY2LCNiMjIsIzFhYjU1NywjOGJlOWZkLCNmMWZhOGMsI2ZmNGY0Zg==',
-    'Oled Black:aF92MTpkYXJrLCMxMjEyMTIsIzEyMTIxMiwjMDAwLCMwMDAsIzEyMTIxMiwjMDAwLCNmZmYsI2ZmZiwjZmZmLCNmZmYsI2ZmZiwjZDAwLCNkMDAsIzFhYjU1NywjOGJlOWZkLCNmMWZhOGMsI2ZmNGY0Zg==',
-  ]
+  const { data: designs } = useHivenDesigns()
+
+  const entries = Object.entries(designs ?? {})
+
+  const { state, setState, filtered } = useInputFilter((design, i, s) => {
+    const [name, code] = design
+    s = s.toLowerCase()
+
+    return (code + name).toLowerCase().includes(s)
+  }, entries)
 
   return (
     <div>
@@ -32,12 +33,18 @@ export default function Home() {
           {/* Title */}
           <Title>Share theme styles for Hiven platform</Title>
 
+          {/* Search */}
+          <Search
+            type='text'
+            value={state}
+            onChange={(e) => setState(e.target.value)}
+            placeholder={'Search for themes..'}
+          />
+
           {/* Design Styles */}
           <DesignStylesContainer>
-            {hivenDesigns.map((design) => {
-              let split = design.split(':')
-
-              return <DesignStyle name={split[0]} code={split[1]} />
+            {filtered.map((design) => {
+              return <DesignStyle name={design[0]} code={design[1]} />
             })}
           </DesignStylesContainer>
         </ContentWrapper>
