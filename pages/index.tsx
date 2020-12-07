@@ -5,6 +5,7 @@ import { useHivenDesigns, useInputFilter } from '../utils/hooks'
 import Navigation from '../components/Navigation'
 import DesignStyle from '../components/DesignStyle'
 import Search from '../components/Search'
+import getBrightness from '../utils/getBrightness'
 
 export default function Home() {
   const { data: designs } = useHivenDesigns()
@@ -14,6 +15,25 @@ export default function Home() {
   const { state, setState, filtered } = useInputFilter((design, i, s) => {
     const [name, code] = design
     s = s.toLowerCase()
+
+    const decoded = atob(code)
+    console.log(decoded)
+
+    const format = decoded.split(',')
+    console.log(format)
+
+    let clean = format.splice(1)
+    clean = clean.splice(0, 13)
+
+    if ('light'.includes(s)) {
+      const background = clean[3]
+      return getBrightness(background) > 50
+    }
+
+    if ('dark'.includes(s)) {
+      const background = clean[3]
+      return getBrightness(background) < 50
+    }
 
     return (code + name).toLowerCase().includes(s)
   }, entries)
@@ -34,11 +54,12 @@ export default function Home() {
           <Title>Share theme styles for Hiven platform</Title>
 
           {/* Search */}
+          <SearchTip>Tip: try 'light' or 'dark'</SearchTip>
           <Search
             type='text'
             value={state}
             onChange={(e) => setState(e.target.value)}
-            placeholder={'Search for themes..'}
+            placeholder={'Search for designs...'}
           />
 
           {/* Design Styles */}
@@ -71,4 +92,10 @@ const DesignStylesContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 20px;
+`
+
+const SearchTip = styled.p`
+  color: #585858;
+  font-size: 12px;
+  margin: 0 0 4px 0;
 `
