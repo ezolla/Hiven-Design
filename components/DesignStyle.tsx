@@ -20,7 +20,6 @@ export default function DesignStyle(props: Props) {
 
   let clean = format.splice(1)
   clean = clean.splice(0, 13)
-  console.log(clean.length)
 
   return (
     <DesignStyleCard>
